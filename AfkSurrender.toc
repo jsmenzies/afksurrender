@@ -3,5 +3,7 @@
 ## Notes: Makes /afk surrender in arenas instead of leaving
 ## Author: Jsm
 ## Version: 1.0
+## X-Website: https://github.com/jsmenzies/afksurrender
+## X-Description: A simple addon that makes the /afk command surrender in arenas instead of leaving the game. Type /afk while in an arena to surrender instead of going AFK.
 
 AfkSurrender.lua
