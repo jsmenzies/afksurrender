@@ -5,7 +5,6 @@ A simple World of Warcraft addon that makes `/afk` surrender in arenas instead o
 ## Features
 
 - Overrides the `/afk` command behavior in arenas
-- Calls `C_PvP.SurrenderArena()` when used in arena
 - Falls back to normal AFK behavior in other game modes
 - Lightweight with no dependencies
 
@@ -25,28 +24,6 @@ A simple World of Warcraft addon that makes `/afk` surrender in arenas instead o
 ## Usage
 
 Simply type `/afk` while in an arena to surrender instead of going AFK.
-
-## Compatibility
-
-- **WoW Version:** 11.0.2+ (The War Within)
-- **Dependencies:** None
-
-## Development
-
-### Creating a New Release
-
-Releases are automated via GitHub Actions and trigger on every push to main:
-
-1. Update the version in `AfkSurrender.toc` if needed
-2. Make your changes and commit them
-3. Push to main:
-   ```bash
-   git push
-   ```
-4. GitHub Actions will automatically:
-   - Package the addon
-   - Create a GitHub release
-   - Wago will automatically detect and publish the new version
 
 ## Author
 

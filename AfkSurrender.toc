@@ -1,5 +1,5 @@
 ## Interface: 110002
-## Title: AFK Surrender
+## Title: AfkSurrender
 ## Notes: Makes /afk surrender in arenas instead of leaving
 ## Author: Jsm
 ## Version: 1.0
