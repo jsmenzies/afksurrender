@@ -13,7 +13,7 @@ A simple World of Warcraft addon that makes `/afk` surrender in arenas instead o
 
 ### Via Wago Addons
 1. Install the [Wago Addons](https://addons.wago.io/) app
-2. Search for "AFK Surrender"
+2. Search for "AfkSurrender"
 3. Click Install
 
 ### Manual Installation
@@ -35,16 +35,15 @@ Simply type `/afk` while in an arena to surrender instead of going AFK.
 
 ### Creating a New Release
 
-Releases are automated via GitHub Actions. To create a new release:
+Releases are automated via GitHub Actions and trigger on every push to main:
 
-1. Make your changes and commit them
-2. Create and push a version tag:
+1. Update the version in `AfkSurrender.toc` if needed
+2. Make your changes and commit them
+3. Push to main:
    ```bash
-   git tag v1.0.1
-   git push origin v1.0.1
+   git push
    ```
-3. GitHub Actions will automatically:
-   - Update the version in `AfkSurrender.toc`
+4. GitHub Actions will automatically:
    - Package the addon
    - Create a GitHub release
    - Wago will automatically detect and publish the new version

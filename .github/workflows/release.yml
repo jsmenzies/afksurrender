@@ -2,8 +2,8 @@ name: Create Release
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -15,17 +15,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Extract version from tag
+      - name: Extract version from TOC and commit info
         id: version
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
+          VERSION=$(grep "^## Version:" AfkSurrender.toc | sed 's/## Version: //')
+          SHORT_SHA=$(git rev-parse --short HEAD)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Releasing version: $VERSION"
-
-      - name: Update TOC version
-        run: |
-          sed -i "s/^## Version: .*/## Version: ${{ steps.version.outputs.version }}/" AfkSurrender.toc
-          cat AfkSurrender.toc
+          echo "short_sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION-$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "Releasing version: $VERSION (commit: $SHORT_SHA)"
 
       - name: Create release directory
         run: mkdir -p .release/AfkSurrender
@@ -45,9 +43,13 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: AfkSurrender v${{ steps.version.outputs.version }}
           files: AfkSurrender-${{ steps.version.outputs.version }}.zip
           body: |
             ## AfkSurrender v${{ steps.version.outputs.version }}
+
+            **Build:** ${{ steps.version.outputs.short_sha }}
 
             ### Installation
             Download `AfkSurrender-${{ steps.version.outputs.version }}.zip` and extract it into your `World of Warcraft/_retail_/Interface/AddOns/` directory.
