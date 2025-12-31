@@ -1,0 +1,60 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Releasing version: $VERSION"
+
+      - name: Update TOC version
+        run: |
+          sed -i "s/^## Version: .*/## Version: ${{ steps.version.outputs.version }}/" AfkSurrender.toc
+          cat AfkSurrender.toc
+
+      - name: Create release directory
+        run: mkdir -p .release/AfkSurrender
+
+      - name: Copy addon files
+        run: |
+          cp AfkSurrender.toc .release/AfkSurrender/
+          cp AfkSurrender.lua .release/AfkSurrender/
+
+      - name: Create ZIP archive
+        run: |
+          cd .release
+          zip -r AfkSurrender-${{ steps.version.outputs.version }}.zip AfkSurrender/
+          cd ..
+          mv .release/AfkSurrender-${{ steps.version.outputs.version }}.zip .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: AfkSurrender-${{ steps.version.outputs.version }}.zip
+          body: |
+            ## AfkSurrender v${{ steps.version.outputs.version }}
+
+            ### Installation
+            Download `AfkSurrender-${{ steps.version.outputs.version }}.zip` and extract it into your `World of Warcraft/_retail_/Interface/AddOns/` directory.
+
+            ### What's New
+            See commit history for changes in this release.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
